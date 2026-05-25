@@ -1,0 +1,46 @@
+# render.yaml
+# Render Blueprint manifest for D.Pharma Study Vault
+# Docs: https://render.com/docs/blueprint-spec
+
+services:
+  - type: web
+    name: dpharma-vault
+    runtime: python
+    region: oregon          # options: oregon, frankfurt, singapore, ohio
+    plan: free              # upgrade to "starter" ($7/mo) for always-on + Disk support
+
+    # ── Build ────────────────────────────────────────────────────────────────
+    buildCommand: pip install -r requirements.txt
+
+    # ── Start ────────────────────────────────────────────────────────────────
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+
+    # ── Environment Variables ─────────────────────────────────────────────────
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.11.0"
+
+      # SQLite database file on the persistent Disk
+      - key: DATABASE_URL
+        value: sqlite+aiosqlite:////var/data/dpharma_vault.db
+
+      # Uploaded files directory on the persistent Disk
+      - key: UPLOAD_DIR
+        value: /var/data/uploaded_notes
+
+      # !! REQUIRED: Replace with your actual GitHub Pages URL !!
+      # Format: https://<username>.github.io  OR
+      #         https://<username>.github.io/<repo-name>
+      # For multiple origins: https://foo.github.io,http://localhost:8000
+      - key: ALLOWED_ORIGINS
+        value: https://YOUR-GITHUB-USERNAME.github.io
+
+    # ── Persistent Disk ───────────────────────────────────────────────────────
+    # Render Disks require a paid plan (Starter at $7/month or higher).
+    # On the free tier, comment this section out — data will reset on restart.
+    # On a paid plan, uncomment to enable persistent SQLite + file storage.
+    #
+    # disk:
+    #   name: dpharma-data
+    #   mountPath: /var/data
+    #   sizeGB: 1

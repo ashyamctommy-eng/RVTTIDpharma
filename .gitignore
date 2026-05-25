@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+env/
+*.egg-info/
+
+# Database
+*.db
+*.db-shm
+*.db-wal
+
+# Uploaded files (don't commit user uploads)
+uploaded_notes/*
+!uploaded_notes/.gitkeep
+
+# Environment
+.env
+.env.*
+
+# IDE
+.vscode/
+.idea/
+
+# Misc
+*.log
+.DS_Store
+
+venv/
+.env
+__pycache__/
+*.pyc
+.pytest_cache/
+*.db
+uploaded_notes/
